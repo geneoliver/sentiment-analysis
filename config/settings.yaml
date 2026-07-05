@@ -22,7 +22,6 @@ sources:
     date_column: "Date"
     description_column: "Description"
     amount_column: "Amount"
-    category_column: "Category"
     amount_sign: charge_positive
     date_format: null  # null = auto-detect
 
@@ -33,6 +32,7 @@ sources:
     category_column: null
     amount_sign: debit_negative
     date_format: null
+    skip_rows: 1  # account metadata row before the real header
 
 claude:
   model: claude-sonnet-5
