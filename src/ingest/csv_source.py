@@ -80,9 +80,13 @@ def load_source(path: Path, source_name: str, source_cfg: dict[str, Any]) -> Ing
     transactions: list[Transaction] = []
     skipped: list[SkippedRow] = []
 
+    skip_rows = source_cfg.get("skip_rows", 0)
+
     with open(path, "r", newline="", encoding="utf-8-sig") as f:
+        for _ in range(skip_rows):
+            f.readline()
         reader = csv.DictReader(f)
-        for line_number, row in enumerate(reader, start=2):  # header is line 1
+        for line_number, row in enumerate(reader, start=skip_rows + 2):  # header is line skip_rows+1
             if row is None or all((v is None or str(v).strip() == "") for v in row.values()):
                 continue  # blank trailer row, common in bank exports
             try:
