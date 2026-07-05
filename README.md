@@ -7,6 +7,18 @@ input to a separate income-modeling tool.
 
 ## Setup
 
+Clone this branch to the project's home on your Mac:
+
+```bash
+git clone https://github.com/geneoliver/sentiment-analysis.git "/Users/gene/Library/CloudStorage/OneDrive-Personal/AA - Claude Cowork/Expense Categorization"
+cd "/Users/gene/Library/CloudStorage/OneDrive-Personal/AA - Claude Cowork/Expense Categorization"
+git checkout claude/expense-categorization-pipeline-t6mk1o
+```
+
+(If you already have a local clone elsewhere, just move/re-clone it to this
+path — nothing in the pipeline hardcodes a location, it's all relative to
+wherever the repo lives.)
+
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
@@ -14,6 +26,16 @@ pip install -r requirements-dev.txt   # includes pytest; use requirements.txt fo
 
 export ANTHROPIC_API_KEY=sk-...       # or put it in a .env file at the project root
 ```
+
+> **Note on the OneDrive location:** `inputs/`, `outputs/`, and
+> `corrections/` hold personal financial data and are gitignored, but they
+> will still sync to OneDrive since this folder is cloud-synced — that's
+> presumably the point (backup/access across devices). One thing to keep
+> out of the sync, though: `.venv/` generates thousands of small files that
+> OneDrive doesn't need to churn through. Either create the venv elsewhere
+> and symlink it in, or mark `.venv/` "Always keep on this device only" /
+> excluded in OneDrive settings if you notice sync lag. For a tool you run
+> once a month this is a minor nuisance at worst, not a blocker.
 
 Without `ANTHROPIC_API_KEY` set, tier-2 classification is skipped
 gracefully — unmatched transactions are marked `Uncategorized` / `pending`
