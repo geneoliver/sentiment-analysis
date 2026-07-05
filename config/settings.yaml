@@ -1,0 +1,71 @@
+# Pipeline-wide settings. Paths are relative to the project root.
+
+paths:
+  inputs_dir: inputs
+  outputs_dir: outputs
+  corrections_dir: corrections
+  taxonomy_file: config/taxonomy.yaml
+  merchant_rules_file: config/merchant_rules.yaml
+  learned_rules_file: config/learned_rules.yaml
+
+# Column mapping per data source. Adjust these once you have real exports —
+# the exact column names/sign conventions vary by bank.
+#
+# amount_sign controls how a raw CSV amount is normalized into the
+# pipeline's convention of "positive = money spent, negative = credit/refund
+# received":
+#   charge_positive  -> raw value already matches the convention (Amex-style: charges positive)
+#   debit_positive   -> raw value already matches the convention (many bank ledgers: debits positive)
+#   debit_negative   -> raw value is flipped (debits shown as negative, e.g. "-42.50" for a purchase)
+sources:
+  amex:
+    date_column: "Date"
+    description_column: "Description"
+    amount_column: "Amount"
+    category_column: "Category"
+    amount_sign: charge_positive
+    date_format: null  # null = auto-detect
+
+  checking:
+    date_column: "Date"
+    description_column: "Description"
+    amount_column: "Amount"
+    category_column: null
+    amount_sign: debit_negative
+    date_format: null
+
+claude:
+  model: claude-sonnet-5
+  max_recent_corrections: 25
+  batch_size: 20
+
+review:
+  low_confidence_threshold: 0.75
+
+dedupe:
+  # Case-insensitive substring match against description. Any transaction
+  # matching one of these on EITHER source is flagged as an internal
+  # transfer and excluded from spend summaries (but kept in every tab for
+  # the audit trail).
+  #
+  # Keep these specific — a bare "AUTOPAY" will false-positive on any
+  # recurring bill that happens to say "autopay" (e.g. "GEICO INSURANCE
+  # AUTOPAY" is real spend, not a transfer).
+  internal_transfer_keywords:
+    - "AMEX EPAYMENT"
+    - "AMERICAN EXPRESS"
+    - "AMEX ONLINE PAYMENT"
+    - "AUTOPAY PAYMENT RECEIVED"
+    - "CREDIT CARD PAYMENT"
+    - "ONLINE PAYMENT - THANK YOU"
+    - "PAYMENT RECEIVED - THANK YOU"
+  # Transactions not caught by a keyword above, but with a near-matching
+  # absolute amount and date across the two sources, are flagged as
+  # "possible_duplicate" for manual review rather than auto-excluded.
+  amount_match_tolerance: 0.01
+  date_window_days: 3
+
+corrections:
+  # A description pattern that has been manually corrected this many times
+  # (or more) is auto-promoted into config/learned_rules.yaml.
+  promote_after_n_corrections: 2

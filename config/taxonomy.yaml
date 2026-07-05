@@ -1,0 +1,85 @@
+# Category taxonomy for the expense pipeline.
+#
+# Edit freely — this file is the single source of truth for what categories
+# exist and how they're described to the Claude API classifier. Adding a new
+# subcategory here does not require any code changes.
+#
+# `top_level` must be either "essentials" or "discretionary".
+# `description` is plain English shown to the Claude API so it understands
+# what belongs in the bucket — write it the way you'd explain it to a person.
+
+essentials:
+  Groceries:
+    description: >
+      Food and household staples purchased for home consumption:
+      supermarkets, warehouse clubs, grocery delivery services.
+  Housing:
+    description: >
+      Rent, mortgage payments, HOA dues, property management fees.
+  Utilities:
+    description: >
+      Electricity, gas, water, sewer, trash/recycling, home internet, cell phone service.
+  Insurance:
+    description: >
+      Health, auto, life, umbrella, renters/homeowners insurance premiums
+      (when billed separately from a mortgage payment).
+  Healthcare:
+    description: >
+      Doctor and dental visits, vision care, pharmacy purchases, health
+      insurance premiums paid outside of payroll, medical devices/supplies.
+  Taxes:
+    description: >
+      Income tax payments and estimated payments, property tax (when not
+      escrowed into a mortgage payment), tax preparation fees.
+  Transportation:
+    description: >
+      Gas/fuel, public transit, parking, tolls, car insurance, routine
+      vehicle maintenance and repair.
+  Debt Payments:
+    description: >
+      Loan and credit card interest/principal payments (student loans,
+      auto loans, personal loans) — the payment itself, not the underlying
+      purchases already categorized elsewhere.
+
+discretionary:
+  Dining Out:
+    description: >
+      Restaurants, coffee shops, bars, food delivery apps (DoorDash, Uber Eats, etc).
+  Entertainment:
+    description: >
+      Movies, concerts, streaming subscriptions, games, live events.
+  Travel:
+    description: >
+      Flights, hotels, vacation rentals, rideshare/taxi while traveling.
+  Shopping:
+    description: >
+      Clothing, electronics, home goods, and general retail purchases not
+      tied to a specific essential need.
+  Hobbies:
+    description: >
+      Recreational gear, sports, crafts, and other hobby-related spending.
+  Donations:
+    description: >
+      Charitable contributions and gifts given to others.
+  Personal Care:
+    description: >
+      Salon, spa, gym memberships, cosmetics, grooming.
+  Subscriptions:
+    description: >
+      Recurring non-entertainment digital subscriptions or memberships
+      (software, apps, clubs) that don't fit another category.
+
+# Special pseudo-category used by the dedupe step to flag money movement
+# between the two accounts (e.g. paying the Amex bill from checking). These
+# rows are kept in every tab for the audit trail but excluded from spend
+# summaries since they aren't actually spend.
+internal_transfer:
+  Credit Card Payment:
+    description: >
+      Payment from checking to a credit card, or a credit card's own record
+      of receiving that payment. Not a purchase — money moving between your
+      own accounts.
+
+# Fallback bucket for anything that couldn't be matched by rules or the
+# Claude API (e.g. the API call failed). Surfaced in the review step.
+fallback_category: Uncategorized

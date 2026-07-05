@@ -1,0 +1,7 @@
+rules:
+  - keyword: "AMAZON"
+    category: discretionary
+    subcategory: Shopping
+  - keyword: "AMAZON PRIME"
+    category: discretionary
+    subcategory: Entertainment

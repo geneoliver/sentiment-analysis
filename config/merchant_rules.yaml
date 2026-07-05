@@ -1,0 +1,87 @@
+# Tier-1 rule-based categorization.
+#
+# Each rule matches when `keyword` appears anywhere in the transaction
+# description (case-insensitive substring match). If more than one rule
+# matches, the longest keyword wins (so a more specific rule beats a more
+# generic one).
+#
+# This is a small illustrative starter set — replace/extend it with your
+# own recurring merchants and known transactions. Category/subcategory
+# values must exist in config/taxonomy.yaml.
+#
+# This file is yours to hand-edit. Rules the pipeline learns automatically
+# from repeated corrections are written to config/learned_rules.yaml instead,
+# so your own edits here never get overwritten by automation.
+
+rules:
+  # --- Internal transfers (excluded from spend summaries) ---
+  - keyword: "AMEX EPAYMENT"
+    category: internal_transfer
+    subcategory: "Credit Card Payment"
+  - keyword: "AUTOPAY PAYMENT RECEIVED"
+    category: internal_transfer
+    subcategory: "Credit Card Payment"
+
+  # --- Essentials ---
+  - keyword: "TRADER JOE"
+    category: essentials
+    subcategory: Groceries
+  - keyword: "WHOLE FOODS"
+    category: essentials
+    subcategory: Groceries
+  - keyword: "SAFEWAY"
+    category: essentials
+    subcategory: Groceries
+  - keyword: "COSTCO"
+    category: essentials
+    subcategory: Groceries
+  - keyword: "PG&E"
+    category: essentials
+    subcategory: Utilities
+  - keyword: "COMCAST"
+    category: essentials
+    subcategory: Utilities
+  - keyword: "VERIZON"
+    category: essentials
+    subcategory: Utilities
+  - keyword: "GEICO"
+    category: essentials
+    subcategory: Insurance
+  - keyword: "KAISER"
+    category: essentials
+    subcategory: Healthcare
+  - keyword: "CVS PHARMACY"
+    category: essentials
+    subcategory: Healthcare
+  - keyword: "SHELL OIL"
+    category: essentials
+    subcategory: Transportation
+  - keyword: "CHEVRON"
+    category: essentials
+    subcategory: Transportation
+
+  # --- Discretionary ---
+  - keyword: "NETFLIX"
+    category: discretionary
+    subcategory: Entertainment
+  - keyword: "SPOTIFY"
+    category: discretionary
+    subcategory: Entertainment
+  - keyword: "DOORDASH"
+    category: discretionary
+    subcategory: "Dining Out"
+  - keyword: "UBER EATS"
+    category: discretionary
+    subcategory: "Dining Out"
+  - keyword: "STARBUCKS"
+    category: discretionary
+    subcategory: "Dining Out"
+  - keyword: "AMAZON"
+    category: discretionary
+    subcategory: Shopping
+  - keyword: "DELTA AIR"
+    category: discretionary
+    subcategory: Travel
+  - keyword: "AIRBNB"
+    category: discretionary
+    subcategory: Travel
