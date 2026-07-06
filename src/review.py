@@ -12,7 +12,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from src.config import Settings, Taxonomy
+from src.config import Settings, Taxonomy, add_subcategory_to_taxonomy
 from src.corrections import promote_rules, record_correction
 from src.models import METHOD_MANUAL, Transaction
 
@@ -57,14 +57,17 @@ def apply_review(categorized_path: Path, review_path: Path, settings: Settings, 
         override_subcategory = _clean(row.get("override_subcategory"))
         if not override_subcategory:
             continue
-        if override_subcategory not in valid_subcategories:
-            raise ValueError(
-                f"Unknown subcategory '{override_subcategory}' for row_id={row['row_id']}. "
-                f"Check config/taxonomy.yaml for valid subcategory names."
-            )
         override_category = _clean(row.get("override_category")) or (
             taxonomy.top_level_for(override_subcategory) or ""
         )
+        if not override_category:
+            raise ValueError(
+                f"Unknown subcategory '{override_subcategory}' for row_id={row['row_id']}. "
+                f"Either add it to config/taxonomy.yaml or fill in override_category explicitly."
+            )
+
+        if override_subcategory not in valid_subcategories:
+            add_subcategory_to_taxonomy(override_subcategory, override_category, settings.taxonomy_file)
 
         row_id = row["row_id"]
         if row_id not in categorized_df.index:

@@ -1,6 +1,8 @@
+import shutil
+
 import pandas as pd
 
-from src.config import load_settings, load_taxonomy
+from src.config import ROOT, load_settings, load_taxonomy
 from src.review import apply_review, export_for_review
 
 
@@ -48,3 +50,41 @@ def test_apply_review_ignores_untouched_rows_with_blank_overrides(tmp_path):
     # r2 was left blank in the review file and must not be touched.
     assert result.loc["r2", "subcategory"] == "Uncategorized"
     assert result.loc["r2", "method"] == "pending"
+
+
+def test_apply_review_adds_unknown_subcategory_to_taxonomy(tmp_path):
+    taxonomy_path = tmp_path / "taxonomy.yaml"
+    shutil.copy(ROOT / "config" / "taxonomy.yaml", taxonomy_path)
+
+    settings = load_settings()
+    settings.raw["paths"]["corrections_dir"] = str(tmp_path / "corrections")
+    settings.raw["paths"]["taxonomy_file"] = str(taxonomy_path)
+    taxonomy = load_taxonomy(taxonomy_path)
+
+    categorized_path = tmp_path / "categorized.csv"
+    review_path = tmp_path / "review.csv"
+    _write_categorized(categorized_path)
+    export_for_review(categorized_path, review_path, settings)
+
+    import csv
+    rows = list(csv.DictReader(open(review_path)))
+    for row in rows:
+        if row["row_id"] == "r1":
+            row["override_category"] = "Discretionary"
+            row["override_subcategory"] = "Petcare"
+    with open(review_path, "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=rows[0].keys())
+        writer.writeheader()
+        writer.writerows(rows)
+
+    applied = apply_review(categorized_path, review_path, settings, taxonomy)
+    assert applied == 1
+
+    # Correction applied correctly
+    result = pd.read_csv(categorized_path).set_index("row_id")
+    assert result.loc["r1", "subcategory"] == "Petcare"
+    assert result.loc["r1", "category"] == "Discretionary"
+
+    # Petcare auto-added to taxonomy for future runs
+    updated = load_taxonomy(taxonomy_path)
+    assert "Petcare" in updated.discretionary

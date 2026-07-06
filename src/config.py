@@ -77,6 +77,11 @@ class Settings:
     def corrections_dir(self) -> Path:
         return ROOT / self.raw["paths"]["corrections_dir"]
 
+    @property
+    def taxonomy_file(self) -> Path:
+        p = Path(self.raw["paths"]["taxonomy_file"])
+        return p if p.is_absolute() else ROOT / p
+
     def source_config(self, source: str) -> dict[str, Any]:
         return self.raw["sources"][source]
 
@@ -142,6 +147,40 @@ def _load_rules_file(path: Path, origin: str) -> list[MerchantRule]:
             origin=origin,
         ))
     return rules
+
+
+_CATEGORY_TO_YAML_KEY: dict[str, str] = {
+    "essentials": "essentials",
+    "discretionary": "discretionary",
+}
+
+
+def add_subcategory_to_taxonomy(subcategory: str, top_level_category: str, path: Path) -> bool:
+    """Add a new subcategory to taxonomy.yaml if not already present.
+
+    top_level_category is matched case-insensitively against 'essentials' and
+    'discretionary'. Returns True if the file was updated, False if the
+    subcategory already existed or the category wasn't recognised.
+
+    Note: rewrites the file via yaml.safe_dump, which drops hand-authored
+    comments. Descriptions for existing subcategories are preserved.
+    """
+    yaml_key = _CATEGORY_TO_YAML_KEY.get(top_level_category.lower())
+    if not yaml_key:
+        return False
+
+    data = _load_yaml(path)
+    bucket: dict = data.get(yaml_key) or {}
+    if subcategory in bucket:
+        return False
+
+    bucket[subcategory] = {"description": ""}
+    data[yaml_key] = bucket
+
+    with open(path, "w") as f:
+        yaml.safe_dump(data, f, default_flow_style=False, allow_unicode=True, sort_keys=False)
+
+    return True
 
 
 def load_merchant_rules(settings: Settings) -> list[MerchantRule]:
