@@ -7,4 +7,85 @@
 # Do not hand-edit the `rules` list structure below — the promotion logic
 # rewrites this file. Feel free to delete entries you no longer want.
 
-rules: []
+rules:
+- keyword: INFINITE SMILES POWELL OH
+  category: Discretionary
+  subcategory: Dental
+- keyword: ECONOMIC SECURITY PLPROVIDENCE RI
+  category: Discretionary
+  subcategory: Planning
+- keyword: UNION SAVINGS BAAUTO TRSFR
+  category: Essentials
+  subcategory: Mortgage, Taxes, &iIns
+- keyword: APLPAY APPLE ONLINE CUPERTINO CA
+  category: Discretionary
+  subcategory: New Ipad
+- keyword: VENMO PAYMENT
+  category: Discretionary
+  subcategory: Golf
+- keyword: ZELLE W/D RICK HODGE GBAQYSYD
+  category: Discretionary
+  subcategory: Golf
+- keyword: BILL PAY:FIRST SERVICE FCU XXXXX BSPXXT
+  category: Essentials
+  subcategory: Car payment
+- keyword: TST* TONTO B&G, LLC CAVE CREEK AZ
+  category: Discretionary
+  subcategory: Entertainment
+- keyword: COLUMBIA GAS OF BILLPAY XXXXX
+  category: Essentials
+  subcategory: Gas
+- keyword: UNITEDHEALTHCAREPREMIUM
+  category: Essentials
+  subcategory: Insurance-UHC
+- keyword: BILL PAY:CITY OF COLUMBUS O XXXXX SBXLG
+  category: Essentials
+  subcategory: Water
+- keyword: NJM INSURANCE WEB PAY XXXXX
+  category: Essentials
+  subcategory: Insurance-Car
+- keyword: BILL PAY:CITY OF COLUMBUS O XXXXX WBRCZW
+  category: Essentials
+  subcategory: Gas
+- keyword: AMER ELECT PWR CPPWDRAWAL
+  category: Essentials
+  subcategory: Electric
+- keyword: CITY OF WORTHINGTON WORTHINGTON OH
+  category: Essentials
+  subcategory: Electric
+- keyword: GOOGLE *YOUTUBEMOUNTAIN VIEWCA US
+  category: Discretionary
+  subcategory: Youtube TV
+- keyword: ZELLE W/D MARY YBSMXSYD
+  category: Discretionary
+  subcategory: Golf
+- keyword: DUBLIN COMMUNITY RECDUBLIN OH
+  category: Discretionary
+  subcategory: Recreation
+- keyword: SOCIAL ONLINE PAYMENAUSTIN TX
+  category: Discretionary
+  subcategory: Entertainment
+- keyword: LOWE'S DUBLIN OH
+  category: Essentials
+  subcategory: House Maintenance
+- keyword: OAKLAND NURSERY DUBLIN OH
+  category: Discretionary
+  subcategory: Landscape
+- keyword: ALTAFIBER CINBELL EPAY CINCINNATI OH
+  category: Essentials
+  subcategory: Wifi
+- keyword: ALTAFIBER CINBELL EPA CINCINNATI OH
+  category: Essentials
+  subcategory: Wifi
+- keyword: UHC BEN SVCS CONS COLL
+  category: Essentials
+  subcategory: Insurance - Dental
+- keyword: VISIBLE LONE TREE CO
+  category: Essentials
+  subcategory: Cell Phone
+- keyword: LSS COLUMBUS OH
+  category: Discretionary
+  subcategory: Donation
+- keyword: IN *DUBLIN AM ROTARYREYNOLDSBURG OH
+  category: Discretionary
+  subcategory: Donation
