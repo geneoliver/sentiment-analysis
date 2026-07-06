@@ -20,6 +20,7 @@ def _write_categorized(path):
 def test_apply_review_ignores_untouched_rows_with_blank_overrides(tmp_path):
     settings = load_settings()
     settings.raw["paths"]["corrections_dir"] = str(tmp_path / "corrections")
+    settings.raw["paths"]["learned_rules_file"] = str(tmp_path / "learned_rules.yaml")
     taxonomy = load_taxonomy()
 
     categorized_path = tmp_path / "categorized.csv"
@@ -58,6 +59,7 @@ def test_apply_review_adds_unknown_subcategory_to_taxonomy(tmp_path):
 
     settings = load_settings()
     settings.raw["paths"]["corrections_dir"] = str(tmp_path / "corrections")
+    settings.raw["paths"]["learned_rules_file"] = str(tmp_path / "learned_rules.yaml")
     settings.raw["paths"]["taxonomy_file"] = str(taxonomy_path)
     taxonomy = load_taxonomy(taxonomy_path)
 
