@@ -68,4 +68,4 @@ dedupe:
 corrections:
   # A description pattern that has been manually corrected this many times
   # (or more) is auto-promoted into config/learned_rules.yaml.
-  promote_after_n_corrections: 2
+  promote_after_n_corrections: 1
